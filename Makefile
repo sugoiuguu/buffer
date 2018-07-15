@@ -6,6 +6,7 @@ SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
 
 TARGET=build/libbuffer.a
+HEADER=src/buffer.h
 
 # The target build
 all: $(TARGET)
@@ -34,8 +35,14 @@ clean:
 
 # The install
 install: all
-	install -d $(DESTDIR)/$(PREFIX)/lib/
-	install $(TARGET) $(DESTDIR)/$(PREFIX)/lib/
+	install -d $(PREFIX)/lib/
+	install $(TARGET) $(PREFIX)/lib/
+	install -d $(PREFIX)/include/
+	install $(HEADER) $(PREFIX)/include/
+
+uninstall:
+	rm -f $(TARGET) $(PREFIX)/lib/$(TARGET)
+	rm -f $(PREFIX)/include/$(HEADER)
 
 # The checker
 BADFUNCS='[^_.>a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?sn?printf|byte_)'
