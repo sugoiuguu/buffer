@@ -14,6 +14,7 @@ struct Buffer {
 typedef struct Buffer Buffer;
 
 Buffer * buffer_alloc(int initial_size);
+void buffer_reset(Buffer *buf);
 int buffer_strlen(Buffer *buf);
 void buffer_free(Buffer *buf);
 int buffer_append(Buffer *buf, char *append, int length);

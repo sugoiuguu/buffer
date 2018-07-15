@@ -21,6 +21,13 @@ error:
     return NULL;
 }
 
+void
+buffer_reset(Buffer *buf)
+{
+    buf->bytes_used = 0;
+    *buf->contents  = '\0';
+}
+
 int
 buffer_strlen(Buffer *buf)
 {
