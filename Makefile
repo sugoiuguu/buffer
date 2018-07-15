@@ -5,13 +5,10 @@ PREFIX?=/usr/local
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
 
-TEST_SRC=$(wildcard tests/*_tests.c)
-TESTS=$(patsubst %.c,%,$(TEST_SRC))
-
 TARGET=build/libbuffer.a
 
 # The target build
-all: $(TARGET) tests
+all: $(TARGET)
 
 dev:CFLAGS+=-DNDEBUG -Wextra
 dev: all
@@ -25,18 +22,12 @@ build:
 	@mkdir -p build
 	@mkdir -p bin
 
-# The Unit Tests
-.PHONY: tests
-tests: CFLAGS += $(TARGET)
-tests: $(TESTS)
-	sh ./tests/runtests.sh
-
 valgrind:
 	VALGRIND="valgrind --leak-check=full --log-file=/tmp/valgrind-%p.log" $(MAKE)
 
 # The cleaner
 clean:
-	rm -rf build $(OBJECTS) $(TESTS)
+	rm -rf build $(OBJECTS)
 	rm -rf tests/tests.log
 	find . -name "*.gc*" -exec rm {} \;
 	rm -rf 'find . -name "*.dSYM" -print'
