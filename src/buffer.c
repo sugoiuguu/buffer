@@ -1,11 +1,11 @@
 #include "buffer.h"
 #include "dbg.h"
 
-Buffer *
+Buffer_t *
 buffer_alloc(int initial_size)
 {
-    Buffer *buf = malloc(sizeof(Buffer));
-    char   *tmp = calloc(1, initial_size * sizeof(char));
+    Buffer_t *buf = malloc(sizeof(Buffer_t));
+    char   *tmp   = calloc(1, initial_size * sizeof(char));
 
     jump_to_error_if(buf == NULL || tmp == NULL);
 
@@ -22,27 +22,27 @@ error:
 }
 
 void
-buffer_reset(Buffer *buf)
+buffer_reset(Buffer_t *buf)
 {
     buf->bytes_used = 0;
     *buf->contents  = '\0';
 }
 
 int
-buffer_strlen(Buffer *buf)
+buffer_strlen(Buffer_t *buf)
 {
     return buf->bytes_used;
 }
 
 void
-buffer_free(Buffer *buf)
+buffer_free(Buffer_t *buf)
 {
     free(buf->contents);
     free(buf);
 }
 
 int
-buffer_has_space(Buffer *buf, int desired_length)
+buffer_has_space(Buffer_t *buf, int desired_length)
 {
     int bytes_remaining = buf->total_size - buf->bytes_used;
 
@@ -52,7 +52,7 @@ buffer_has_space(Buffer *buf, int desired_length)
 }
 
 int
-buffer_grow(Buffer *buf, int minimum_size)
+buffer_grow(Buffer_t *buf, int minimum_size)
 {
     int factor = buf->total_size;
 
@@ -76,7 +76,7 @@ error:
 }
 
 void
-buffer_cat(Buffer *buf, char *append, int length)
+buffer_cat(Buffer_t *buf, char *append, int length)
 {
     int i               = 0;
     int bytes_copied    = 0;
@@ -96,7 +96,7 @@ buffer_cat(Buffer *buf, char *append, int length)
 }
 
 int
-buffer_append(Buffer *buf, char *append, int length)
+buffer_append(Buffer_t *buf, char *append, int length)
 {
     int status         = 0;
     int desired_length = length + 1; // Space for NUL byte
@@ -114,7 +114,7 @@ error:
 }
 
 int
-buffer_appendf(Buffer *buf, const char *format, ...)
+buffer_appendf(Buffer_t *buf, const char *format, ...)
 {
     char *tmp = NULL;
     int bytes_written, status;
@@ -139,7 +139,7 @@ error:
 }
 
 int
-buffer_nappendf(Buffer *buf, size_t length, const char *format, ...)
+buffer_nappendf(Buffer_t *buf, size_t length, const char *format, ...)
 {
     int status        = 0,
         printf_length = length + 1;
@@ -169,7 +169,7 @@ error:
 }
 
 char *
-buffer_to_s(Buffer *buf)
+buffer_to_s(Buffer_t *buf)
 {
     char *result = calloc(1, buf->bytes_used + 1);
     strncpy(result, buf->contents, buffer_strlen(buf));

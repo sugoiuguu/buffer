@@ -5,21 +5,21 @@
 #include <strings.h>
 #include <stdarg.h>
 
-struct Buffer {
+struct Buffer_t {
     char *contents;
     int bytes_used;
     int total_size;
 };
 
-typedef struct Buffer Buffer;
+typedef struct Buffer_t Buffer_t;
 
-Buffer * buffer_alloc(int initial_size);
-void buffer_reset(Buffer *buf);
-int buffer_strlen(Buffer *buf);
-void buffer_free(Buffer *buf);
-int buffer_append(Buffer *buf, char *append, int length);
-int buffer_appendf(Buffer *buf, const char *format, ...);
-int buffer_nappendf(Buffer *buf, size_t length, const char *format, ...);
-char *buffer_to_s(Buffer *buf);
+extern Buffer_t * buffer_alloc(int initial_size);
+extern void buffer_reset(Buffer_t *buf);
+extern int buffer_strlen(Buffer_t *buf);
+extern void buffer_free(Buffer_t *buf);
+extern int buffer_append(Buffer_t *buf, char *append, int length);
+extern int buffer_appendf(Buffer_t *buf, const char *format, ...);
+extern int buffer_nappendf(Buffer_t *buf, size_t length, const char *format, ...);
+extern char *buffer_to_s(Buffer_t *buf);
 
 #endif
